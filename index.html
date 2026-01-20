@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escanear Caso</title>
+
+  <!-- Librería QR -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .app {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    #reader {
+      width: 100%;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <h1>Escanear Caso</h1>
+  <div id="reader"></div>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  const WHATSAPP_NUMBER = "569XXXXXXXX"; // ← cambia este número
+
+  function onScanSuccess(qrText) {
+    // Ejemplo QR: 1838124_U_16
+    const caseNumber = qrText.split("_")[0];
+
+    const message = `Caso ${caseNumber}`;
+    const encodedMessage = encodeURIComponent(message);
+
+    document.getElementById("result").innerText = message;
+
+    // Abrir WhatsApp
+    window.location.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+  }
+
+  new Html5Qrcode("reader").start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    onScanSuccess
+  );
+</script>
+
+</body>
+</html>
